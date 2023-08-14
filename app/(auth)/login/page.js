@@ -3,13 +3,25 @@
 import Link from "next/link";
 import React, { useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import Alert from "@/components/Alert";
 
+Alert;
 const Login = () => {
   const [credentials, setCredentials] = useState({ email: "", password: "" });
+  const [alert, setAlert] = useState(null);
 
   const router = useRouter();
   const searchParams = useSearchParams();
-  const callbackUrl = searchParams.get("callbackUrl") || "/profile";
+  const callbackUrl = searchParams.get("callbackUrl") || "/";
+  const showAlert = (message, type) => {
+    setAlert({
+      msg: message,
+      type: type,
+    });
+    setTimeout(() => {
+      setAlert(null);
+    }, 1500);
+  };
   const submitHandler = async (e) => {
     e.preventDefault();
     try {
@@ -25,11 +37,11 @@ const Login = () => {
       const res = await response.json();
       if (res.ok) {
         localStorage.setItem("token", res.authtoken);
-        props.showAlert("Logged In Successful", "success");
+        showAlert("Logged In Successful", "success");
         setCredentials({ email: "", password: "" });
         router.push(callbackUrl);
       } else {
-        props.showAlert("Invalid Credentials", "danger");
+        showAlert("Invalid Credentials", "danger");
       }
     } catch (error) {
       console.log(error);
@@ -42,6 +54,7 @@ const Login = () => {
 
   return (
     <section className="h-screen">
+      <Alert showAlert={showAlert} />
       <div className="h-full mt-8 p-8 rounded-md">
         <h2>Login to continue to inventory Management</h2>
         <div className="g-6 flex h-full flex-wrap items-center justify-center lg:justify-between">

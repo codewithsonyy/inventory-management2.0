@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import Alert from "@/components/Alert";
 
 const Signup = () => {
   const [credentials, setCredentials] = useState({
@@ -12,6 +13,15 @@ const Signup = () => {
     cpassword: "",
   });
   const router = useRouter();
+  const showAlert = (message, type) => {
+    setAlert({
+      msg: message,
+      type: type,
+    });
+    setTimeout(() => {
+      setAlert(null);
+    }, 1500);
+  };
   const onChange = (e) => {
     setCredentials({ ...credentials, [e.target.name]: e.target.value });
   };
@@ -47,6 +57,7 @@ const Signup = () => {
   return (
     <div>
       <div className="p-10 h-fit">
+        <Alert showAlert={showAlert} />
         <h1 className="mb-8 font-extrabold text-4xl">
           Create an account to use Inventory Management{" "}
         </h1>
