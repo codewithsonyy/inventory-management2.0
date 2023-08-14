@@ -1,6 +1,6 @@
 # AAJ KUCH TUFANI KARTE HAI AND HO JANE KE BAAD BHEN TUJHE UPDATE KARTE HAI 
 <p align="center">
- Tabtak koi coffee pila do 10rs ke yr
+ Tabtak chai/coffee. Hai na
   </p>
 <p align="center">
   <a href="https://www.buymeacoffee.com/codewithsonyy">
