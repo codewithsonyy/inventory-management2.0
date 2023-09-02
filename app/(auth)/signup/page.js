@@ -6,6 +6,7 @@ import Link from "next/link";
 import Alert from "@/components/Alert";
 
 const Signup = () => {
+  const [alert, setAlert] = useState(null);
   const [credentials, setCredentials] = useState({
     name: "",
     email: "",
@@ -30,7 +31,7 @@ const Signup = () => {
     e.preventDefault();
 
     try {
-      const response = await fetch("api/signup", {
+      const response = await fetch("api/auth/signup", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -39,18 +40,20 @@ const Signup = () => {
       });
       const resjson = await response.json();
 
-      if (response?.ok) {
-        props.showAlert("Account Created Successful", "success");
+      if (resjson?.success) {
+        showAlert("Account Created Successful", "success");
         localStorage.setItem("token", resjson.authtoken);
         setCredentials({ name: "", email: "", password: "", cpassword: "" });
         router.push("/");
         return;
       } else {
-        props.showAlert("Invalid Details", "danger");
+        showAlert("User already exists!", "danger");
+        setCredentials({ name: "", email: "", password: "", cpassword: "" });
+        router.push("/login");
         return;
       }
     } catch (error) {
-      console.log("error", error);
+      console.log(error);
     }
   };
 
@@ -109,7 +112,7 @@ const Signup = () => {
               />
             </div>
             <div className="mt-4">
-              <label className="block font-semibold" htmlFor="password">
+              <label className="block font-semibold" htmlFor="c password">
                 Confirm Password
               </label>
               <input
@@ -135,7 +138,7 @@ const Signup = () => {
               <h1>
                 If user already exits&#x2192;
                 <Link
-                  className="text-white font-bold active:text-black"
+                  className="text-black font-bold active:text-gray-200"
                   href="/login"
                 >
                   {" "}

@@ -25,17 +25,18 @@ const Login = () => {
   const submitHandler = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch("api/login", {
+      const response = await fetch("api/auth/login", {
         method: "POST",
         header: "application/json",
-        body: JSON.stringfy({
+        body: JSON.stringify({
           email: credentials.email,
           password: credentials.password,
         }),
       });
 
-      const res = await response.json();
-      if (res.ok) {
+      // const res = await response.json();
+      console.log(response);
+      if (response.ok) {
         localStorage.setItem("token", res.authtoken);
         showAlert("Logged In Successful", "success");
         setCredentials({ email: "", password: "" });

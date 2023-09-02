@@ -3,10 +3,9 @@ import validator from "validator";
 
 const UserSchema = new Schema(
   {
-    username: {
+    name: {
       type: String,
       required: true,
-      validate: [validator.isEmpty, "This field can't be empty!"],
     },
     email: {
       type: String,
@@ -17,7 +16,6 @@ const UserSchema = new Schema(
     password: {
       type: String,
       required: true,
-      validate: [validator.isEmpty, "This field can't be empty!"],
 
       select: false,
     },

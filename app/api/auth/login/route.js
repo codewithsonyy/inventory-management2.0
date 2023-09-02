@@ -8,20 +8,21 @@ export async function POST(request) {
     await connectToMongo();
     const { email, password } = await request.json();
     let user = await User.findOne({ email });
-
+    console.log(user);
     if (!user) {
       success = false;
 
       return new Response(
-        JSON.stringify({ error: "Enter valid credentials!" }),
+        JSON.stringify({ error: " Please Enter valid credentials!" }),
         {
           status: 400,
           headers: { "Content-Type": "application/json" },
         }
       );
     }
-
+    console.log(user);
     const passwordCompare = await bcrypt.compare(password, user.password);
+    console.log(passwordCompare);
     if (!passwordCompare) {
       success = false;
       return new Response(
@@ -39,7 +40,7 @@ export async function POST(request) {
     };
     const authtoken = jwt.sign(data, process.env.JWT_SECRET);
 
-    return new Response({ success, authtoken });
+    return new Response(authtoken);
   } catch (err) {
     return new Response(JSON.stringify({ error: err.message }), {
       status: 500,

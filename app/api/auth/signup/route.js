@@ -1,6 +1,7 @@
 import connectToMongo from "@/db/dbConnect";
 import User from "@/db/models/User";
 import bcrypt from "bcryptjs";
+import { sign } from "jsonwebtoken";
 
 export async function POST(request) {
   try {
@@ -8,16 +9,19 @@ export async function POST(request) {
     await connectToMongo();
     const { name, email, password } = await request.json();
     let user = await User.findOne({ email });
+    console.log(user);
 
     if (user) {
-     return new Response({success,error:"User already exists!"})
+      return new Response(
+        JSON.stringify({ success: false, error: "User already exists!" })
+      );
     }
     const salt = await bcrypt.genSalt(10);
-    const secPass = await bcrypt.hash(req.body.password, salt);
+    const secPass = await bcrypt.hash(password, salt);
     user = await User.create({
-      name: req.body.name,
+      name: name,
       password: secPass,
-      email: req.body.email,
+      email: email,
     });
 
     const data = {
@@ -25,9 +29,9 @@ export async function POST(request) {
         id: user.id,
       },
     };
-    const authtoken = jwt.sign(data, process.env.JWT_SECRET);
-    success=true;
-    return new Response({authtoken,success});
+    const authtoken = sign(data, process.env.JWT_SECRET);
+    success = true;
+    return new Response(JSON.stringify({ authtoken, success: true }));
   } catch (err) {
     return new Response(JSON.stringify({ error: err.message }), {
       status: 500,
@@ -35,5 +39,3 @@ export async function POST(request) {
     });
   }
 }
-
- 
