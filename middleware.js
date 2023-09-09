@@ -1,35 +1,25 @@
-import {  NextRequest , NextResponse } from 'next/server';
-
-import { getToken } from 'next-auth/jwt';
-
-export async function middleware(req) {
-
-  const session = await getToken({ req });
-
-  const isAuth = !!session;
-  const isAuthPage = req.nextUrl.pathname.startsWith('/login') || req.nextUrl.pathname.startsWith('/register');
-
-  if (isAuthPage && isAuth) {
-    return NextResponse.redirect('/profile');
-  }
-
-
-
-  // If the user is authenticated and they're not trying to access an auth page, let them proceed
-  if  (isAuth && !isAuthPage) {
-    return NextResponse.next();
-  }
-
-  // If the user is not authenticated and they're trying to access an auth page, let them proceed
- if  (!isAuth && isAuthPage) {
-    return NextResponse.next();
-  }
-  // else{
-  //   return NextResponse.redirect('/');
-  // }
-}
-
+import { NextResponse } from "next/server";
 
 export const config = {
-  matcher: ['/profile/:path*'],
+  matcher: ["/api/product:path*", "/api/action:path*"],
 };
+
+export function middleware(request) {
+  const requestHeaders = new Headers(request.headers);
+  const token = requestHeaders.get("auth-token");
+
+  if (!token) {
+    return new NextResponse(
+      JSON.stringify({ success: false, message: "No user token available" }),
+      { status: 401, headers: { "content-type": "application/json" } }
+    );
+  }
+  try {
+    return NextResponse.next();
+  } catch (error) {
+    return new NextResponse(
+      JSON.stringify({ success: false, message: "authentication failed" }),
+      { status: 401, headers: { "content-type": "application/json" } }
+    );
+  }
+}

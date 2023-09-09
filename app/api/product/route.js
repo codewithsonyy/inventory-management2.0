@@ -1,36 +1,59 @@
-import { MongoClient } from "mongodb";
+import connectToMongo from "@/db/dbConnect";
+import Product from "@/db/models/Products";
+import { verify } from "jsonwebtoken";
+
 import { NextResponse } from "next/server";
 
 export async function GET(request) {
+  const requestHeaders = new Headers(request.headers);
+  const token = requestHeaders.get("auth-token");
+  const data = verify(token, process.env.JWT_SECRET);
 
-  // Replace the uri string with your connection string.
-  const uri = "mongodb+srv://merndev:wWahb6MrJfhdoyF0@cluster0.rqn8j9a.mongodb.net/";
-  const client = new MongoClient(uri);
+  request.user = data.user;
+
   try {
-    const database = client.db('stock');
-    const inventory = database.collection('inventory');
-    const query = {};
-    const products = await inventory.find(query).toArray();
-    return NextResponse.json({ success: true, products })
-  } finally {
-    // Ensures that the client will close when you finish/error
-    await client.close();
+    await connectToMongo();
+
+    const products = await Product.find({ user: request.user.id });
+
+    return NextResponse.json({
+      success: true,
+
+      products,
+    });
+  } catch (error) {
+    console.error(error.message);
+    return new NextResponse(
+      JSON.stringify({ success: false, message: error.message }),
+      { status: 500, headers: { "content-type": "application/json" } }
+    );
   }
-
 }
-
 export async function POST(request) {
-  // Replace the uri string with your connection string.
-  let body = await request.json()
-  const uri = "mongodb+srv://merndev:wWahb6MrJfhdoyF0@cluster0.rqn8j9a.mongodb.net/";
- const client = new MongoClient(uri);
+  const requestHeaders = new Headers(request.headers);
+  const token = requestHeaders.get("auth-token");
+  const data = verify(token, process.env.JWT_SECRET);
+
+  request.user = data.user;
   try {
-    const database = client.db('stock');
-    const inventory = database.collection('inventory');
-    const product = await inventory.insertOne(body)
-    return NextResponse.json({ product, ok: true })
-  } finally {
-    // Ensures that the client will close when you finish/error
-    await client.close();
+    await connectToMongo();
+    let body = await request.json();
+    const { slug, quantity, price } = body;
+
+    const product = new Product({
+      user: request.user.id,
+      slug,
+      quantity,
+      price,
+    });
+    const savedProduct = await product.save();
+
+    return NextResponse.json({ savedProduct, success: true });
+  } catch (error) {
+    console.error(error.message);
+    return new NextResponse(
+      JSON.stringify({ success: false, message: error.message }),
+      { status: 500, headers: { "content-type": "application/json" } }
+    );
   }
 }

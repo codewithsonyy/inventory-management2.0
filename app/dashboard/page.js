@@ -1,13 +1,11 @@
 "use client";
 import Header from "@/components/Header";
-
-import Image from "next/image";
 import { useState, useEffect } from "react";
 
 export default function Dashboard() {
   const [productForm, setProductForm] = useState({});
   const [products, setProducts] = useState([]);
-  const [alert, setAlert] = useState("");
+
   const [query, setQuery] = useState("");
   const [loading, setLoading] = useState(false);
   const [loadingaction, setLoadingaction] = useState(false);
@@ -15,9 +13,17 @@ export default function Dashboard() {
 
   useEffect(() => {
     // Fetch products on load
+
     const fetchProducts = async () => {
-      const response = await fetch("/api/product");
+      const response = await fetch("/api/product", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          "auth-token": localStorage.getItem("token"),
+        },
+      });
       let rjson = await response.json();
+
       setProducts(rjson.products);
     };
     fetchProducts();
@@ -49,6 +55,7 @@ export default function Dashboard() {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        "auth-token": localStorage.getItem("token"),
       },
       body: JSON.stringify({ action, slug, initialQuantity }),
     });
@@ -57,18 +64,20 @@ export default function Dashboard() {
   };
 
   const addProduct = async (e) => {
+    e.preventDefault();
     try {
       const response = await fetch("/api/product", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          "auth-token": localStorage.getItem("token"),
         },
         body: JSON.stringify(productForm),
       });
 
       if (response.ok) {
         // Product added successfully
-        setAlert("Your Product has been added!");
+        alert("Your Product has been added!");
         setProductForm({});
       } else {
         // Handle error case
@@ -78,10 +87,15 @@ export default function Dashboard() {
       console.error("Error:", error);
     }
     // Fetch all the products again to sync back
-    const response = await fetch("/api/product");
+    const response = await fetch("/api/product", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "auth-token": localStorage.getItem("token"),
+      },
+    });
     let rjson = await response.json();
     setProducts(rjson.products);
-    e.preventDefault();
   };
   //[] bracket notation to compute an expression
   const handleChange = (e) => {
@@ -107,7 +121,6 @@ export default function Dashboard() {
     <>
       <Header />
       <div className="container mx-auto my-8">
-        <div className="text-green-800 text-center">{alert}</div>
         <h1 className="text-3xl font-semibold mb-6">Search a Product</h1>
         <div className="flex mb-2">
           <input

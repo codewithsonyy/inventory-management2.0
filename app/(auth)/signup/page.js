@@ -11,7 +11,6 @@ const Signup = () => {
     name: "",
     email: "",
     password: "",
-    cpassword: "",
   });
   const router = useRouter();
   const showAlert = (message, type) => {
@@ -26,7 +25,7 @@ const Signup = () => {
   const onChange = (e) => {
     setCredentials({ ...credentials, [e.target.name]: e.target.value });
   };
-  const { name, email, password, cpassword } = credentials;
+  const { name, email, password } = credentials;
   const submitHandler = async (e) => {
     e.preventDefault();
 
@@ -41,15 +40,16 @@ const Signup = () => {
       const resjson = await response.json();
 
       if (resjson?.success) {
-        showAlert("Account Created Successful", "success");
+        showAlert("Account Created Successful!", "success");
         localStorage.setItem("token", resjson.authtoken);
-        setCredentials({ name: "", email: "", password: "", cpassword: "" });
-        router.push("/");
+
+        setCredentials({ name: "", email: "", password: "" });
+        //router.push("/");
         return;
       } else {
-        showAlert("User already exists!", "danger");
-        setCredentials({ name: "", email: "", password: "", cpassword: "" });
-        router.push("/login");
+        showAlert("User already exists. Please login!", "danger");
+        setCredentials({ name: "", email: "", password: "" });
+        // router.push("/login");
         return;
       }
     } catch (error) {
@@ -60,7 +60,7 @@ const Signup = () => {
   return (
     <div>
       <div className="p-10 h-fit">
-        <Alert showAlert={showAlert} />
+        <Alert alert={alert} showAlert={showAlert} />
         <h1 className="mb-8 font-extrabold text-4xl">
           Create an account to use Inventory Management{" "}
         </h1>
@@ -109,22 +109,6 @@ const Signup = () => {
                 value={credentials?.password || ""}
                 onChange={onChange}
                 minLength={5}
-              />
-            </div>
-            <div className="mt-4">
-              <label className="block font-semibold" htmlFor="c password">
-                Confirm Password
-              </label>
-              <input
-                className=" shadow-inner bg-white rounded-lg placeholder-black text-2xl p-4 border-none block mt-1 w-full"
-                type="password"
-                name="cpassword"
-                id="cpassword"
-                required="required"
-                value={credentials?.cpassword || ""}
-                onChange={onChange}
-                minLength={5}
-                placeholder="Confirm Password"
               />
             </div>
 

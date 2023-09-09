@@ -12,7 +12,7 @@ const Login = () => {
 
   const router = useRouter();
   const searchParams = useSearchParams();
-  const callbackUrl = searchParams.get("callbackUrl") || "/";
+  const callbackUrl = searchParams.get("callbackUrl") || "/dashboard";
   const showAlert = (message, type) => {
     setAlert({
       msg: message,
@@ -34,13 +34,14 @@ const Login = () => {
         }),
       });
 
-      // const res = await response.json();
-      console.log(response);
-      if (response.ok) {
+      const res = await response.json();
+
+      if (res.success) {
         localStorage.setItem("token", res.authtoken);
-        showAlert("Logged In Successful", "success");
+
+        showAlert("Logged In Successfully!", "success");
         setCredentials({ email: "", password: "" });
-        router.push(callbackUrl);
+        router.replace(callbackUrl);
       } else {
         showAlert("Invalid Credentials", "danger");
       }
@@ -55,7 +56,7 @@ const Login = () => {
 
   return (
     <section className="h-screen">
-      <Alert showAlert={showAlert} />
+      <Alert alert={alert} showAlert={showAlert} />
       <div className="h-full mt-8 p-8 rounded-md">
         <h2>Login to continue to inventory Management</h2>
         <div className="g-6 flex h-full flex-wrap items-center justify-center lg:justify-between">

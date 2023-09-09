@@ -9,7 +9,7 @@ export async function POST(request) {
     await connectToMongo();
     const { name, email, password } = await request.json();
     let user = await User.findOne({ email });
-    console.log(user);
+   
 
     if (user) {
       return new Response(
@@ -30,7 +30,7 @@ export async function POST(request) {
       },
     };
     const authtoken = sign(data, process.env.JWT_SECRET);
-    success = true;
+
     return new Response(JSON.stringify({ authtoken, success: true }));
   } catch (err) {
     return new Response(JSON.stringify({ error: err.message }), {

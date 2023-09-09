@@ -1,32 +1,33 @@
 import connectToMongo from "@/db/dbConnect";
 import User from "@/db/models/User";
 import bcrypt from "bcryptjs";
+import { sign } from "jsonwebtoken";
 
 export async function POST(request) {
   let success = true;
   try {
     await connectToMongo();
     const { email, password } = await request.json();
-    let user = await User.findOne({ email });
-    console.log(user);
+    let user = await User.findOne({ email }).select("+password");
+
     if (!user) {
       success = false;
 
       return new Response(
-        JSON.stringify({ error: " Please Enter valid credentials!" }),
+        JSON.stringify({ success, error: " Please Enter valid credentials!" }),
         {
           status: 400,
           headers: { "Content-Type": "application/json" },
         }
       );
     }
-    console.log(user);
+
     const passwordCompare = await bcrypt.compare(password, user.password);
-    console.log(passwordCompare);
+
     if (!passwordCompare) {
       success = false;
       return new Response(
-        JSON.stringify({ error: " Please Enter valid credentials!" }),
+        JSON.stringify({ success, error: " Please Enter valid credentials!" }),
         {
           status: 400,
           headers: { "Content-Type": "application/json" },
@@ -38,9 +39,9 @@ export async function POST(request) {
         id: user.id,
       },
     };
-    const authtoken = jwt.sign(data, process.env.JWT_SECRET);
+    const authtoken = sign(data, process.env.JWT_SECRET);
 
-    return new Response(authtoken);
+    return new Response(JSON.stringify({ authtoken, success: true }));
   } catch (err) {
     return new Response(JSON.stringify({ error: err.message }), {
       status: 500,
