@@ -1,30 +1,41 @@
-import { MongoClient } from "mongodb";
+import connectToMongo from "@/db/dbConnect";
+import Product from "@/db/models/Products";
+import { verify } from "jsonwebtoken";
 import { NextResponse } from "next/server";
-
 export async function POST(request) {
-  let { action, slug, initialQuantity } = await request.json()
-  // Replace the uri string with your connection string.
-  const uri = "mongodb+srv://mongodb:di9utTasUi4AHxoJ@mongoyoutube.nhtraxd.mongodb.net/";
-  const client = new MongoClient(uri);
-  try {
-    const database = client.db('stock');
-    const inventory = database.collection('inventory');
-    const filter = { slug: slug };
+  const requestHeaders = new Headers(request.headers);
+  const token = requestHeaders.get("auth-token");
+  const data = verify(token, process.env.JWT_SECRET);
 
-    let newQuantity = action == "plus" ? (parseInt(initialQuantity) + 1) : (parseInt(initialQuantity) - 1)
+  let id = data.user.id;
+
+  try {
+    await connectToMongo();
+    let { action, slug, initialQuantity } = await request.json();
+
+    let newQuantity =
+      action == "plus"
+        ? parseInt(initialQuantity) + 1
+        : parseInt(initialQuantity) - 1;
     const updateDoc = {
       $set: {
-        quantity: newQuantity
+        quantity: newQuantity,
       },
     };
-    const result = await inventory.updateOne(filter, updateDoc, {});
 
-    return NextResponse.json({ success: true, message: `${result.matchedCount} document(s) matched the filter, updated ${result.modifiedCount} document(s)` })
-  }
-  catch {
-    return NextResponse.json({ success: false, message: `Some error occurred` })
-  }
-  finally {
-    await client.close();
+    const product = await Product.findOne({
+      $and: [{ user: id }, { slug: slug }],
+    });
+    product.quantity = newQuantity;
+
+    const savedProduct = await product.save();
+
+    return NextResponse.json({ savedProduct, success: true });
+  } catch (error) {
+    console.error(error.message);
+    return new NextResponse(
+      JSON.stringify({ success: false, message: error.message }),
+      { status: 500, headers: { "content-type": "application/json" } }
+    );
   }
 }

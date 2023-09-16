@@ -61,10 +61,8 @@ const Signup = () => {
     <div>
       <div className="p-10 h-fit">
         <Alert alert={alert} showAlert={showAlert} />
-        <h1 className="mb-8 font-extrabold text-4xl">
-          Create an account to use Inventory Management{" "}
-        </h1>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+
+        <div className="grid grid-cols-1 md:grid-cols-2 rounded-md w-2/3 p-10 gap-8">
           <form onSubmit={submitHandler}>
             <div>
               <label className="block font-semibold" htmlFor="name">
@@ -115,14 +113,14 @@ const Signup = () => {
             <div className="flex items-center justify-between mt-8">
               <button
                 type="submit"
-                className="flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 active:rounded-full md:py-4 md:text-lg md:px-10"
+                className="flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-slate-800 hover:rounded-none active:animate-ping md:py-4 md:text-lg md:px-10"
               >
                 Submit
               </button>
-              <h1>
+              <h1 className="ml-4">
                 If user already exits&#x2192;
                 <Link
-                  className="text-black font-bold active:text-gray-200"
+                  className="text-green-400 font-bold active:text-gray-200"
                   href="/login"
                 >
                   {" "}

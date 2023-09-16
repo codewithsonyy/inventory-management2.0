@@ -30,7 +30,7 @@ export default function Dashboard() {
   }, []);
 
   const buttonAction = async (action, slug, initialQuantity) => {
-    // Immediately change the quantity of the product with given slug in Products
+    // Immediately change the quantity of the product with given slug in Products(only frontend)
     let index = products.findIndex((item) => item.slug == slug);
     let newProducts = JSON.parse(JSON.stringify(products));
     if (action == "plus") {
@@ -60,6 +60,7 @@ export default function Dashboard() {
       body: JSON.stringify({ action, slug, initialQuantity }),
     });
     let r = await response.json();
+
     setLoadingaction(false);
   };
 
@@ -108,7 +109,13 @@ export default function Dashboard() {
     if (value.length > 3) {
       setLoading(true);
       setDropdown([]);
-      const response = await fetch("/api/search?query=" + query);
+      const response = await fetch("/api/search?query=" + query, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          "auth-token": localStorage.getItem("token"),
+        },
+      });
       let rjson = await response.json();
       setDropdown(rjson.products);
       setLoading(false);
@@ -118,9 +125,9 @@ export default function Dashboard() {
   };
 
   return (
-    <>
+    <div className="">
       <Header />
-      <div className="container mx-auto my-8">
+      <div className="container mx-auto   my-8">
         <h1 className="text-3xl font-semibold mb-6">Search a Product</h1>
         <div className="flex mb-2">
           <input
@@ -186,85 +193,87 @@ export default function Dashboard() {
       </div>
 
       {/* Display Current Stock  */}
-      <div className="container mx-auto my-8">
-        <h1 className="text-3xl font-semibold mb-6">Add a Product</h1>
+      <div className="flex">
+        <div className="container mx-auto my-8">
+          <h1 className="text-3xl font-semibold mb-6">Add a Product</h1>
 
-        <form>
-          <div className="mb-4">
-            <label htmlFor="productName" className="block mb-2">
-              Product Slug
-            </label>
-            <input
-              value={productForm?.slug || ""}
-              name="slug"
-              onChange={handleChange}
-              type="text"
-              id="productName"
-              className="w-full border border-gray-300 px-4 py-2"
-            />
-          </div>
+          <form>
+            <div className="mb-4">
+              <label htmlFor="productName" className="block mb-2">
+                Product Slug
+              </label>
+              <input
+                value={productForm?.slug || ""}
+                name="slug"
+                onChange={handleChange}
+                type="text"
+                id="productName"
+                className="w-full border border-gray-300 px-4 py-2"
+              />
+            </div>
 
-          <div className="mb-4">
-            <label htmlFor="quantity" className="block mb-2">
-              Quantity
-            </label>
-            <input
-              value={productForm?.quantity || ""}
-              name="quantity"
-              onChange={handleChange}
-              type="number"
-              id="quantity"
-              className="w-full border border-gray-300 px-4 py-2"
-            />
-          </div>
+            <div className="mb-4">
+              <label htmlFor="quantity" className="block mb-2">
+                Quantity
+              </label>
+              <input
+                value={productForm?.quantity || ""}
+                name="quantity"
+                onChange={handleChange}
+                type="number"
+                id="quantity"
+                className="w-full border border-gray-300 px-4 py-2"
+              />
+            </div>
 
-          <div className="mb-4">
-            <label htmlFor="price" className="block mb-2">
-              Price
-            </label>
-            <input
-              value={productForm?.price || ""}
-              name="price"
-              onChange={handleChange}
-              type="number"
-              id="price"
-              className="w-full border border-gray-300 px-4 py-2"
-            />
-          </div>
+            <div className="mb-4">
+              <label htmlFor="price" className="block mb-2">
+                Price
+              </label>
+              <input
+                value={productForm?.price || ""}
+                name="price"
+                onChange={handleChange}
+                type="number"
+                id="price"
+                className="w-full border border-gray-300 px-4 py-2"
+              />
+            </div>
 
-          <button
-            onClick={addProduct}
-            type="submit"
-            className="bg-purple-500 hover:bg-purple-600 text-white px-4 py-2 rounded-lg shadow-md font-semibold"
-          >
-            Add Product
-          </button>
-        </form>
+            <button
+              onClick={addProduct}
+              type="submit"
+              className="bg-purple-500 hover:bg-purple-600 text-white px-4 py-2 rounded-lg shadow-md font-semibold"
+            >
+              Add Product
+            </button>
+          </form>
+        </div>
+        <div className="container my-8 mx-auto">
+          <h1 className="text-3xl font-semibold mb-6">Display Current Stock</h1>
+
+          <table className="table-auto w-full">
+            <thead>
+              <tr>
+                <th className="px-4 py-2">Product Name</th>
+                <th className="px-4 py-2">Quantity</th>
+                <th className="px-4 py-2">Price</th>
+              </tr>
+            </thead>
+            <tbody>
+              {products.map((product) => {
+                return (
+                  <tr key={product.slug}>
+                    <td className="border px-4 py-2">{product.slug}</td>
+                    <td className="border px-4 py-2">{product.quantity}</td>
+                    <td className="border px-4 py-2">₹{product.price}</td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
       </div>
-      <div className="container my-8 mx-auto">
-        <h1 className="text-3xl font-semibold mb-6">Display Current Stock</h1>
-
-        <table className="table-auto w-full">
-          <thead>
-            <tr>
-              <th className="px-4 py-2">Product Name</th>
-              <th className="px-4 py-2">Quantity</th>
-              <th className="px-4 py-2">Price</th>
-            </tr>
-          </thead>
-          <tbody>
-            {products.map((product) => {
-              return (
-                <tr key={product.slug}>
-                  <td className="border px-4 py-2">{product.slug}</td>
-                  <td className="border px-4 py-2">{product.quantity}</td>
-                  <td className="border px-4 py-2">₹{product.price}</td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
-      </div>
-    </>
+    </div>
   );
 }
