@@ -38,18 +38,18 @@ const Header = () => {
     <header className="text-gray-600 body-font">
       <div className="container mx-auto flex flex-wrap p-5 flex-col md:flex-row items-center">
         <a className="flex title-font font-extrabold items-center text-gray-900 mb-4 md:mb-0">
-          <span className="ml-3 text-xl">{name || ""}</span>
+          <span className="ml-3 text-xl">Username- {name || ""}</span>
         </a>
         <nav className="md:ml-auto flex flex-wrap items-center text-base justify-center">
           {token ? (
             <button
               onClick={handleLogout}
-              className="bg-purple-500 hover:bg-purple-600 text-white px-4 py-2 rounded-lg shadow-md font-semibold"
+              className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg shadow-md font-semibold"
             >
               Logout
             </button>
           ) : (
-            <button className="bg-purple-500 hover:bg-purple-600 text-white px-4 py-2 rounded-lg shadow-md font-semibold">
+            <button className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg shadow-md font-semibold">
               <Link href="/signup" role="button">
                 Signup
               </Link>

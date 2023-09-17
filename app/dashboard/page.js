@@ -125,9 +125,9 @@ export default function Dashboard() {
   };
 
   return (
-    <div className="">
+    <div className="p-6">
       <Header />
-      <div className="container mx-auto   my-8">
+      <div className="container mx-auto w-1/2  my-8">
         <h1 className="text-3xl font-semibold mb-6">Search a Product</h1>
         <div className="flex mb-2">
           <input
@@ -149,7 +149,7 @@ export default function Dashboard() {
             <img width={74} src="/loading.svg" alt="" />{" "}
           </div>
         )}
-        <div className="dropcontainer absolute w-[72vw] border-1 bg-purple-100 rounded-md ">
+        <div className="dropcontainer absolute  w-1/2 border-1 bg-green-100 rounded-md ">
           {dropdown.map((item) => {
             return (
               <div
@@ -166,7 +166,7 @@ export default function Dashboard() {
                       buttonAction("minus", item.slug, item.quantity);
                     }}
                     disabled={loadingaction}
-                    className="subtract inline-block px-3 py-1 cursor-pointer bg-purple-500 text-white font-semibold rounded-lg shadow-md disabled:bg-purple-200"
+                    className="subtract inline-block px-3 py-1 cursor-pointer bg-green-500 text-white font-semibold rounded-lg shadow-md disabled:bg-green-200"
                   >
                     {" "}
                     -{" "}
@@ -180,7 +180,7 @@ export default function Dashboard() {
                       buttonAction("plus", item.slug, item.quantity);
                     }}
                     disabled={loadingaction}
-                    className="add inline-block px-3 py-1 cursor-pointer bg-purple-500 text-white font-semibold rounded-lg shadow-md disabled:bg-purple-200"
+                    className="add inline-block px-3 py-1 cursor-pointer bg-green-500 text-white font-semibold rounded-lg shadow-md disabled:bg-green-200"
                   >
                     {" "}
                     +{" "}
@@ -193,8 +193,8 @@ export default function Dashboard() {
       </div>
 
       {/* Display Current Stock  */}
-      <div className="flex">
-        <div className="container mx-auto my-8">
+      <div className="flex gap-4">
+        <div className="container mx-auto shadow-md rounded-md p-3 my-8">
           <h1 className="text-3xl font-semibold mb-6">Add a Product</h1>
 
           <form>
@@ -243,13 +243,13 @@ export default function Dashboard() {
             <button
               onClick={addProduct}
               type="submit"
-              className="bg-purple-500 hover:bg-purple-600 text-white px-4 py-2 rounded-lg shadow-md font-semibold"
+              className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg shadow-md font-semibold"
             >
               Add Product
             </button>
           </form>
         </div>
-        <div className="container my-8 mx-auto">
+        <div className="container my-8 shadow-md rounded-md p-3 mx-auto">
           <h1 className="text-3xl font-semibold mb-6">Display Current Stock</h1>
 
           <table className="table-auto w-full">
