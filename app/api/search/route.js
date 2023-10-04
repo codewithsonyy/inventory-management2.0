@@ -1,6 +1,7 @@
 import connectToMongo from "@/db/dbConnect";
 import Product from "@/db/models/Products";
 import { verify } from "jsonwebtoken";
+import mongoose from "mongoose";
 
 import { NextResponse } from "next/server";
 
@@ -18,9 +19,9 @@ export async function GET(request) {
     const products = await Product.aggregate([
       {
         $match: {
-          $or: [
+          user: new mongoose.Types.ObjectId(id),
+          $and: [
             { slug: { $regex: query, $options: "i" } }, // Partial matching for name field
-            { user: { id } }, // multiple fields search -here id and name field
           ],
         },
       },

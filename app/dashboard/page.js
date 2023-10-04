@@ -10,6 +10,7 @@ export default function Dashboard() {
   const [loading, setLoading] = useState(false);
   const [loadingaction, setLoadingaction] = useState(false);
   const [dropdown, setDropdown] = useState([]);
+  const [search, setSearch] = useState(false);
 
   useEffect(() => {
     // Fetch products on load
@@ -107,6 +108,7 @@ export default function Dashboard() {
     let value = e.target.value;
     setQuery(value);
     if (value.length > 3) {
+      setSearch(true);
       setLoading(true);
       setDropdown([]);
       const response = await fetch("/api/search?query=" + query, {
@@ -120,6 +122,7 @@ export default function Dashboard() {
       setDropdown(rjson.products);
       setLoading(false);
     } else {
+      setSearch(false);
       setDropdown([]);
     }
   };
@@ -146,49 +149,54 @@ export default function Dashboard() {
         {loading && (
           <div className="flex justify-center items-center">
             {" "}
-            <img width={74} src="/loading.svg" alt="" />{" "}
+            <p>loading...</p>
           </div>
         )}
         <div className="dropcontainer absolute  w-1/2 border-1 bg-green-100 rounded-md ">
-          {dropdown.map((item) => {
-            return (
-              <div
-                key={item.slug}
-                className="container flex justify-between p-2 my-1 border-b-2"
-              >
-                <span className="slug">
-                  {" "}
-                  {item.slug} ({item.quantity} available for ₹{item.price})
-                </span>
-                <div className="mx-5">
-                  <button
-                    onClick={() => {
-                      buttonAction("minus", item.slug, item.quantity);
-                    }}
-                    disabled={loadingaction}
-                    className="subtract inline-block px-3 py-1 cursor-pointer bg-green-500 text-white font-semibold rounded-lg shadow-md disabled:bg-green-200"
+          {search &&
+            (dropdown.length > 0 ? (
+              dropdown.map((item) => {
+                return (
+                  <div
+                    key={item.slug}
+                    className="container flex justify-between p-2 my-1 border-b-2"
                   >
-                    {" "}
-                    -{" "}
-                  </button>
+                    <span className="slug">
+                      {" "}
+                      {item.slug} ({item.quantity} available for ₹{item.price})
+                    </span>
+                    <div className="mx-5">
+                      <button
+                        onClick={() => {
+                          buttonAction("minus", item.slug, item.quantity);
+                        }}
+                        disabled={loadingaction}
+                        className="subtract inline-block px-3 py-1 cursor-pointer bg-green-500 text-white font-semibold rounded-lg shadow-md disabled:bg-green-200"
+                      >
+                        {" "}
+                        -{" "}
+                      </button>
 
-                  <span className="quantity inline-block  min-w-3 mx-3">
-                    {item.quantity}
-                  </span>
-                  <button
-                    onClick={() => {
-                      buttonAction("plus", item.slug, item.quantity);
-                    }}
-                    disabled={loadingaction}
-                    className="add inline-block px-3 py-1 cursor-pointer bg-green-500 text-white font-semibold rounded-lg shadow-md disabled:bg-green-200"
-                  >
-                    {" "}
-                    +{" "}
-                  </button>
-                </div>
-              </div>
-            );
-          })}
+                      <span className="quantity inline-block  min-w-3 mx-3">
+                        {item.quantity}
+                      </span>
+                      <button
+                        onClick={() => {
+                          buttonAction("plus", item.slug, item.quantity);
+                        }}
+                        disabled={loadingaction}
+                        className="add inline-block px-3 py-1 cursor-pointer bg-green-500 text-white font-semibold rounded-lg shadow-md disabled:bg-green-200"
+                      >
+                        {" "}
+                        +{" "}
+                      </button>
+                    </div>
+                  </div>
+                );
+              })
+            ) : (
+              <div> Not found.</div>
+            ))}
         </div>
       </div>
 

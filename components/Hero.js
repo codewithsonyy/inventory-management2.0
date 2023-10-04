@@ -7,25 +7,7 @@ import getScrollAnimation from "@/utils/getScrollAnimation";
 import ScrollAnimationWrapper from "./ScrollAnimationWrapper";
 import Link from "next/link";
 
-const Hero = ({
-  listUser = [
-    {
-      name: "Users",
-      number: "390",
-      icon: "/assets/Icon/heroicons_sm-user.svg",
-    },
-    {
-      name: "Locations",
-      number: "20",
-      icon: "/assets/Icon/gridicons_location.svg",
-    },
-    {
-      name: "Server",
-      number: "50",
-      icon: "/assets/Icon/bx_bxs-server.svg",
-    },
-  ],
-}) => {
+const Hero = () => {
   const scrollAnimation = useMemo(() => getScrollAnimation(), []);
 
   return (
@@ -52,31 +34,6 @@ const Hero = ({
                 <Link href="/signup">Get Started</Link>
               </ButtonPrimary>
             </div>
-            {/* {listUser.map((listUsers, index) => (
-              <motion.div
-                className="flex items-center justify-start sm:justify-center py-4 sm:py-6 w-8/12 px-4 sm:w-auto mx-auto sm:mx-0"
-                key={index}
-                custom={{ duration: 2 + index }}
-                variants={scrollAnimation}
-              >
-                <div className="flex mx-auto w-40 sm:w-auto">
-                  <div className="flex items-center justify-center bg-orange-100 w-12 h-12 mr-6 rounded-full">
-                    <img src={listUsers.icon} className="h-6 w-6" />
-                  </div>
-                  <div className="flex flex-col">
-                    <p className="text-xl text-black-600 font-bold">
-                      {listUsers.number}+
-                    </p>
-                    <p className="text-lg text-black-500">{listUsers.name}</p>
-                  </div>
-                </div>
-              </motion.div>
-            ))} */}
-            {/* <div className="flex w-full">
-              <motion.div className="h-full  w-full" variants={scrollAnimation}>
-                <img src="/st-bg.png" />
-              </motion.div>
-            </div> */}
           </motion.div>
         </ScrollAnimationWrapper>
         <div className="relative w-full flex">

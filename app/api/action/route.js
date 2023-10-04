@@ -17,11 +17,6 @@ export async function POST(request) {
       action == "plus"
         ? parseInt(initialQuantity) + 1
         : parseInt(initialQuantity) - 1;
-    const updateDoc = {
-      $set: {
-        quantity: newQuantity,
-      },
-    };
 
     const product = await Product.findOne({
       $and: [{ user: id }, { slug: slug }],
