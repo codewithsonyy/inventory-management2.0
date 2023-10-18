@@ -1,6 +1,7 @@
 <br />
 <div align="center">
-  <h1 align="center">Stockify-Inventory Management 2.0</h1>
+  <h1 align="center">Hacktoberfest-2023</h1>
+  <h2 align="center">Stockify-Inventory Management 2.0</h2>
 <div align="center">
 
   <p align="center">
