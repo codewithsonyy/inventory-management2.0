@@ -66,7 +66,7 @@ npm install
 - Now after installation is completed Run the code using following command
 
 ```sh
-npm start
+npm run dev
 ```
 
 backend
