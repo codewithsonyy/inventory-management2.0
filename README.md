@@ -72,10 +72,9 @@ npm run dev
 
 backend
 - paste the mongodb connection string in .env.local file(create one in the root folder)
-- or You can just login: soni@gmail.com
-password: soni1234
+
   <br/>
-- my file .env.local file
+- my .env.local file
 ![Screenshot (320)](https://github.com/codewithsonyy/inventory-management2.0/assets/114895266/7812c116-7928-468e-b533-5de933b48c80)
   
   
