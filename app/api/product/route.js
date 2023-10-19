@@ -57,3 +57,57 @@ export async function POST(request) {
     );
   }
 }
+
+export async function DELETE(request){
+  try{
+ 
+  const requestHeaders = new Headers(request.headers);
+  const token = requestHeaders.get("auth-token");
+  const data = verify(token, process.env.JWT_SECRET);
+
+  request.user = data.user;
+  await connectToMongo();
+  let ID;
+  try {
+    const requestBody = await request.json();
+    
+    ID = requestBody;
+ 
+  } catch (jsonError) {
+    // Handle JSON parsing error
+    return new NextResponse(
+      JSON.stringify({ success: false, message: 'Invalid JSON input' }),
+      { status: 400, headers: { 'content-type': 'application/json' }}
+    );
+  }
+    
+    
+
+    const product = await Product.findById(ID)
+   
+    if (!product) {
+      return new NextResponse(
+        JSON.stringify({ success: false, message: "Product not find"}),
+        { status: 404, headers: { "content-type": "application/json" } }
+      );
+    }
+     // Delete the product
+
+     const result = await Product.findByIdAndDelete(ID)
+    
+     if (!result) {
+      return new NextResponse(
+        JSON.stringify({ success: false, message: 'Failed to delete product' }),
+        { status: 500, headers: { 'content-type': 'application/json' }}
+      );
+    }
+
+    return new NextResponse(JSON.stringify({ success: true }));
+  }catch(error){
+    console.error('Error in DELETE route:', error.message);
+    return new NextResponse(
+      JSON.stringify({ success: false, message: error.message }),
+      { status: 500, headers: { 'content-type': 'application/json' }}
+    );
+  }
+}
