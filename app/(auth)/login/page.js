@@ -50,6 +50,8 @@ const Login = () => {
       showAlert(
         error instanceof Object && error.message
           ? error.message
+          : error
+          ? error
           : "Something went wrong!",
         "danger"
       );
