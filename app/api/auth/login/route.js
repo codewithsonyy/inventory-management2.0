@@ -14,7 +14,7 @@ export async function POST(request) {
       success = false;
 
       return new Response(
-        JSON.stringify({ success, error: " Please Enter valid credentials!" }),
+        JSON.stringify({ success, error: "Invalid credentials!" }),
         {
           status: 400,
           headers: { "Content-Type": "application/json" },
@@ -27,7 +27,7 @@ export async function POST(request) {
     if (!passwordCompare) {
       success = false;
       return new Response(
-        JSON.stringify({ success, error: " Please Enter valid credentials!" }),
+        JSON.stringify({ success, error: "Invalid credentials!" }),
         {
           status: 400,
           headers: { "Content-Type": "application/json" },

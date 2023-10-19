@@ -20,7 +20,7 @@ const Signup = () => {
     });
     setTimeout(() => {
       setAlert(null);
-    }, 1500);
+    }, 2500);
   };
   const onChange = (e) => {
     setCredentials({ ...credentials, [e.target.name]: e.target.value });
