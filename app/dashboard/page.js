@@ -1,7 +1,7 @@
 "use client";
 import Header from "@/components/Header";
 import { useState, useEffect } from "react";
-import {MdDelete} from "react-icons/md"
+import { MdDelete } from "react-icons/md";
 import { useRouter } from "next/navigation";
 export default function Dashboard() {
   const [productForm, setProductForm] = useState({});
@@ -9,13 +9,12 @@ export default function Dashboard() {
 
   const [query, setQuery] = useState("");
   const [loading, setLoading] = useState(false);
-  const [loadingDelAction,setLoadingDelAction] = useState(false)
+  const [loadingDelAction, setLoadingDelAction] = useState(false);
   const [loadingaction, setLoadingaction] = useState(false);
   const [dropdown, setDropdown] = useState([]);
   const [search, setSearch] = useState(false);
-   
-  const router = useRouter()
 
+  const router = useRouter();
 
   const buttonAction = async (action, slug, initialQuantity) => {
     // Immediately change the quantity of the product with given slug in Products(only frontend)
@@ -63,7 +62,7 @@ export default function Dashboard() {
         },
         body: JSON.stringify(productForm),
       });
-      console.log(response)
+      console.log(response);
 
       if (response.ok) {
         // Product added successfully
@@ -116,9 +115,9 @@ export default function Dashboard() {
   };
 
   // ---------------DELETE FUNCTION----------------
-  const handleDeleteProduct=async (id) => {
-    const ID = id
-    try{
+  const handleDeleteProduct = async (id) => {
+    const ID = id;
+    try {
       const response = await fetch("/api/product", {
         method: "DELETE",
         headers: {
@@ -128,16 +127,16 @@ export default function Dashboard() {
         body: JSON.stringify(ID),
       });
       let rjson = await response.json();
-      console.log(rjson)
-      if(rjson.success=== true){
-        alert("Succesfully Deleted")
-        setLoadingDelAction(!loadingDelAction)
-        router.refresh
+      console.log(rjson);
+      if (rjson.success === true) {
+        alert("Succesfully Deleted");
+        setLoadingDelAction(!loadingDelAction);
+        router.refresh;
       }
-    }catch(error){
-      console.log(error)
+    } catch (error) {
+      console.log(error);
     }
-  }
+  };
 
   useEffect(() => {
     // Fetch products on load
@@ -155,11 +154,10 @@ export default function Dashboard() {
     };
     fetchProducts();
   }, [loadingDelAction]);
-  useEffect(()=> {
-   
-    handleDeleteProduct()
+  useEffect(() => {
+    handleDeleteProduct();
     // setLoadingDelAction(false)
-  },[products])
+  }, [products]);
 
   return (
     <div className="p-6">
@@ -197,7 +195,8 @@ export default function Dashboard() {
                   >
                     <span className="slug">
                       {" "}
-                      {item.slug} ({item.quantity} available for ₹{item.price})
+                      {item.slug} ({item.quantity} available for ₹
+                      {item.price * item.quantity})
                     </span>
                     <div className="mx-5">
                       <button
@@ -235,94 +234,100 @@ export default function Dashboard() {
       </div>
 
       {/* Display Current Stock  */}
-      
-         
-          <div className="flex gap-4">
-            <div className="container mx-auto shadow-md rounded-md p-3 my-8">
-              <h1 className="text-3xl font-semibold mb-6">Add a Product</h1>
 
-              <form>
-                <div className="mb-4">
-                  <label htmlFor="productName" className="block mb-2">
-                    Product Slug
-                  </label>
-                  <input
-                    value={productForm?.slug || ""}
-                    name="slug"
-                    onChange={handleChange}
-                    type="text"
-                    id="productName"
-                    className="w-full border border-gray-300 px-4 py-2"
-                  />
-                </div>
+      <div className="flex gap-4">
+        <div className="container mx-auto shadow-md rounded-md p-3 my-8">
+          <h1 className="text-3xl font-semibold mb-6">Add a Product</h1>
 
-                <div className="mb-4">
-                  <label htmlFor="quantity" className="block mb-2">
-                    Quantity
-                  </label>
-                  <input
-                    value={productForm?.quantity || ""}
-                    name="quantity"
-                    onChange={handleChange}
-                    type="number"
-                    id="quantity"
-                    className="w-full border border-gray-300 px-4 py-2"
-                  />
-                </div>
-
-                <div className="mb-4">
-                  <label htmlFor="price" className="block mb-2">
-                    Price
-                  </label>
-                  <input
-                    value={productForm?.price || ""}
-                    name="price"
-                    onChange={handleChange}
-                    type="number"
-                    id="price"
-                    className="w-full border border-gray-300 px-4 py-2"
-                  />
-                </div>
-
-                <button
-                  onClick={addProduct}
-                  type="submit"
-                  className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg shadow-md font-semibold"
-                >
-                  Add Product
-                </button>
-              </form>
+          <form>
+            <div className="mb-4">
+              <label htmlFor="productName" className="block mb-2">
+                Product Slug
+              </label>
+              <input
+                value={productForm?.slug || ""}
+                name="slug"
+                onChange={handleChange}
+                type="text"
+                id="productName"
+                className="w-full border border-gray-300 px-4 py-2"
+              />
             </div>
-            <div className="container my-8 shadow-md rounded-md p-3 mx-auto">
-              <h1 className="text-3xl font-semibold mb-6">Display Current Stock</h1>
 
-              <table className="table-auto w-full">
-                <thead>
-                  <tr>
-                    <th className="px-4 py-2">Product Name</th>
-                    <th className="px-4 py-2">Quantity</th>
-                    <th className="px-4 py-2">Price</th>
-                    <th className="px-4 py-2">Delete</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {products &&products.map((product) => {
-                    return (
-                      <tr key={product.slug}>
-                        <td className="border px-4 py-2">{product.slug}</td>
-                        <td className="border px-4 py-2">{product.quantity}</td>
-                        <td className="border px-4 py-2">₹{product.price}</td>
-                        <td onClick={() => handleDeleteProduct(product._id)}
-                        className="border cursor-pointer flex justify-center items-center text-2xl py-2 text-red-600"><MdDelete/></td>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
+            <div className="mb-4">
+              <label htmlFor="quantity" className="block mb-2">
+                Quantity
+              </label>
+              <input
+                value={productForm?.quantity || ""}
+                name="quantity"
+                onChange={handleChange}
+                type="number"
+                id="quantity"
+                className="w-full border border-gray-300 px-4 py-2"
+              />
             </div>
-          </div>    
-      
-      
+
+            <div className="mb-4">
+              <label htmlFor="price" className="block mb-2">
+                Price
+              </label>
+              <input
+                value={productForm?.price || ""}
+                name="price"
+                onChange={handleChange}
+                type="number"
+                id="price"
+                className="w-full border border-gray-300 px-4 py-2"
+              />
+            </div>
+
+            <button
+              onClick={addProduct}
+              type="submit"
+              className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg shadow-md font-semibold"
+            >
+              Add Product
+            </button>
+          </form>
+        </div>
+        <div className="container my-8 shadow-md rounded-md p-3 mx-auto">
+          <h1 className="text-3xl font-semibold mb-6">Display Current Stock</h1>
+
+          <table className="table-auto w-full">
+            <thead>
+              <tr>
+                <th className="px-4 py-2">Product Name</th>
+                <th className="px-4 py-2">Quantity</th>
+                <th className="px-4 py-2">Unit Price</th>
+                <th className="px-4 py-2">Total Price</th>
+                <th className="px-4 py-2">Delete</th>
+              </tr>
+            </thead>
+            <tbody>
+              {products &&
+                products.map((product) => {
+                  return (
+                    <tr key={product.slug}>
+                      <td className="border px-4 py-2">{product.slug}</td>
+                      <td className="border px-4 py-2">{product.quantity}</td>
+                      <td className="border px-4 py-2">₹{product.price}</td>
+                      <td className="border px-4 py-2">
+                        ₹{product.price * product.quantity}
+                      </td>
+                      <td
+                        onClick={() => handleDeleteProduct(product._id)}
+                        className="border cursor-pointer flex justify-center items-center text-2xl py-2 text-red-600"
+                      >
+                        <MdDelete />
+                      </td>
+                    </tr>
+                  );
+                })}
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
   );
 }
