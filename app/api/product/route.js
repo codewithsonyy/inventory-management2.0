@@ -72,7 +72,9 @@ export async function DELETE(request){
     const requestBody = await request.json();
     
     ID = requestBody;
-    console.log(ID)
+
+
+
   } catch (jsonError) {
     // Handle JSON parsing error
     return new NextResponse(
@@ -84,7 +86,8 @@ export async function DELETE(request){
     
 
     const product = await Product.findById(ID)
-    console.log("getProduct",product)
+
+
     if (!product) {
       return new NextResponse(
         JSON.stringify({ success: false, message: "Product not find"}),
@@ -94,7 +97,7 @@ export async function DELETE(request){
      // Delete the product
 
      const result = await Product.findByIdAndDelete(ID)
-     console.log("result",result)
+
      if (!result) {
       return new NextResponse(
         JSON.stringify({ success: false, message: 'Failed to delete product' }),
