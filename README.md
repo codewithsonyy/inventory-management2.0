@@ -12,7 +12,7 @@ A cloud-based inventory management tool to easily manage, track and search produ
 
 </p>
 </div>
-    <a href=""><strong>View Demo »</strong></a>
+    <a href="https://vercel.com/codewithsonyy/stockify/5uxrGwgts4c5c8x1b8NnsV7SM6fi"><strong>View Site here »</strong></a>
     <br />
     <br />
 
@@ -71,12 +71,13 @@ npm run dev
 ```
 
 backend
-- paste the mongodb connection string in .env.local file(create one in the root folder)
+- create a .env.local file in the root directory
+- paste the mongodb connection string in MONGODB_URL=
+- Paste your secret in JWT_SECRET=
 
   <br/>
-- my .env.local file
-![Screenshot (320)](https://github.com/codewithsonyy/inventory-management2.0/assets/114895266/7812c116-7928-468e-b533-5de933b48c80)
-  
+
+ 
   
 you are all set to rock!
 
@@ -86,7 +87,8 @@ you are all set to rock!
 
 
 
-![herojs2](https://github.com/codewithsonyy/inventory-management2.0/assets/114895266/21303a14-d0b9-4243-b02e-14a8fc570632)
+
+![new](https://github.com/codewithsonyy/inventory-management2.0/assets/114895266/0093b902-484d-4873-9c1b-a15c5dfaa345)
 
 
 ## Contributing
