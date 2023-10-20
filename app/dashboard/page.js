@@ -3,6 +3,7 @@ import Header from "@/components/Header";
 import { useState, useEffect } from "react";
 import { MdDelete } from "react-icons/md";
 import { useRouter } from "next/navigation";
+import { toast } from "react-toastify";
 export default function Dashboard() {
   const [productForm, setProductForm] = useState({});
   const [products, setProducts] = useState([]);
@@ -67,14 +68,14 @@ export default function Dashboard() {
 
       if (result.success) {
         // Product added successfully
-        alert("Your Product has been added!");
+        toast.success("Your Product has been added!");
         setProductForm({});
       } else {
         // Handle error case
-        alert(result.message ?? "Something went wrong");
+        toast.error(result.message ?? "Something went wrong");
       }
     } catch (error) {
-      alert(
+      toast.error(
         error instanceof Object && error.message
           ? error.message
           : error
@@ -136,14 +137,14 @@ export default function Dashboard() {
       let rjson = await response.json();
       console.log(rjson);
       if (rjson.success === true) {
-        alert("Succesfully Deleted");
+        toast.success("Succesfully Deleted");
         setLoadingDelAction(!loadingDelAction);
         router.refresh;
       } else {
-        alert(rjson.message ?? "Something went wrong");
+        toast.error(rjson.message ?? "Something went wrong");
       }
     } catch (error) {
-      alert(
+      toast.error(
         error instanceof Object && error.message
           ? error.message
           : error
@@ -169,10 +170,10 @@ export default function Dashboard() {
         if (rjson.success) {
           setProducts(rjson.products);
         } else {
-          alert(rjson.message);
+          toast.error(rjson.message);
         }
       } catch (error) {
-        alert(
+        toast.error(
           error instanceof Object && error.message
             ? error.message
             : error
