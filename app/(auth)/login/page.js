@@ -46,7 +46,6 @@ const Login = () => {
         showAlert(res.error ? res.error : "Something went wrong!", "danger");
       }
     } catch (error) {
-      console.log(error);
       showAlert(
         error instanceof Object && error.message
           ? error.message

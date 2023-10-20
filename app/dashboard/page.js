@@ -135,7 +135,7 @@ export default function Dashboard() {
         body: JSON.stringify(ID),
       });
       let rjson = await response.json();
-      console.log(rjson);
+
       if (rjson.success === true) {
         toast.success("Succesfully Deleted");
         setLoadingDelAction(!loadingDelAction);
