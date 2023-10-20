@@ -201,7 +201,11 @@ export default function Dashboard() {
                           buttonAction("minus", item.slug, item.quantity);
                         }}
                         disabled={loadingaction || item.quantity === 0}
-                        className="subtract inline-block px-3 py-1 cursor-pointer bg-green-500 text-white font-semibold rounded-lg shadow-md disabled:bg-green-200"
+                        className={`subtract inline-block px-3 py-1 ${
+                          item.quantity === 0
+                            ? "cursor-not-allowed"
+                            : "cursor-pointer"
+                        } bg-green-500 text-white font-semibold rounded-lg shadow-md disabled:bg-green-200`}
                       >
                         {" "}
                         -{" "}
