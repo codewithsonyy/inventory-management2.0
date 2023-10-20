@@ -12,7 +12,7 @@ A cloud-based inventory management tool to easily manage, track and search produ
 
 </p>
 </div>
-    <a href="https://vercel.com/codewithsonyy/stockify/5uxrGwgts4c5c8x1b8NnsV7SM6fi"><strong>View Site here »</strong></a>
+    <a href="https://stockify-3u6imvyth-codewithsonyy.vercel.app/"><strong>View Site here »</strong></a>
     <br />
     <br />
 
