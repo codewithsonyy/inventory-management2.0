@@ -20,7 +20,7 @@ const Signup = () => {
     });
     setTimeout(() => {
       setAlert(null);
-    }, 1500);
+    }, 2500);
   };
   const onChange = (e) => {
     setCredentials({ ...credentials, [e.target.name]: e.target.value });
@@ -37,23 +37,31 @@ const Signup = () => {
         },
         body: JSON.stringify({ name, email, password }),
       });
-      const resjson = await response.json();
+      const res = await response.json();
 
-      if (resjson?.success) {
+      if (res?.success) {
         showAlert("Account Created Successful!", "success");
-        localStorage.setItem("token", resjson.authtoken);
+        localStorage.setItem("token", res.authtoken);
 
         setCredentials({ name: "", email: "", password: "" });
         //router.push("/");
         return;
       } else {
-        showAlert("User already exists. Please login!", "danger");
+        showAlert(res.error ? res.error : "Something went wrong!", "danger");
         setCredentials({ name: "", email: "", password: "" });
         // router.push("/login");
         return;
       }
     } catch (error) {
       console.log(error);
+      showAlert(
+        error instanceof Object && error.message
+          ? error.message
+          : error
+          ? error
+          : "Something went wrong!",
+        "danger"
+      );
     }
   };
 

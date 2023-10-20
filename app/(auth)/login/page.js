@@ -20,7 +20,7 @@ const Login = () => {
     });
     setTimeout(() => {
       setAlert(null);
-    }, 1500);
+    }, 2500);
   };
   const submitHandler = async (e) => {
     e.preventDefault();
@@ -43,10 +43,18 @@ const Login = () => {
         setCredentials({ email: "", password: "" });
         router.replace(callbackUrl);
       } else {
-        showAlert("Invalid Credentials", "danger");
+        showAlert(res.error ? res.error : "Something went wrong!", "danger");
       }
     } catch (error) {
       console.log(error);
+      showAlert(
+        error instanceof Object && error.message
+          ? error.message
+          : error
+          ? error
+          : "Something went wrong!",
+        "danger"
+      );
     }
   };
 
