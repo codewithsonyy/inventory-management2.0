@@ -155,10 +155,6 @@ export default function Dashboard() {
     };
     fetchProducts();
   }, [loadingDelAction]);
-  useEffect(() => {
-    handleDeleteProduct();
-    // setLoadingDelAction(false)
-  }, [products]);
 
   return (
     <div className="md:p-6 w-full">
