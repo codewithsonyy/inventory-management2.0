@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose, { models } from "mongoose";
 import { Schema, model } from "mongoose";
 import mongooseUniqueValidator from "mongoose-unique-validator";
 
@@ -26,6 +26,6 @@ ProductsSchema.plugin(mongooseUniqueValidator, {
   message: "product with `{PATH}` = `{VALUE}` already exists",
 });
 
-const Product = model("product", ProductsSchema);
+const Product = models.product || model("product", ProductsSchema);
 
 export default Product;
