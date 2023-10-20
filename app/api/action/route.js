@@ -18,6 +18,13 @@ export async function POST(request) {
         ? parseInt(initialQuantity) + 1
         : parseInt(initialQuantity) - 1;
 
+    if (newQuantity < 0) {
+      return NextResponse.json({
+        success: false,
+        message: "Product quantity cannot be negative!",
+      });
+    }
+
     const product = await Product.findOne({
       $and: [{ user: id }, { slug: slug }],
     });
