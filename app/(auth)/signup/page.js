@@ -70,11 +70,11 @@ const Signup = () => {
       <div className="p-10 h-fit">
         <Alert alert={alert} showAlert={showAlert} />
 
-        <div className="grid grid-cols-1 md:grid-cols-2 rounded-md w-2/3 p-10 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 rounded-md xl:w-2/3 lg:p-10 gap-8">
           <form onSubmit={submitHandler}>
             <div>
               <label className="block font-semibold" htmlFor="name">
-                name
+                Name
               </label>
               <input
                 className="w-full shadow-inner bg-white rounded-lg placeholder-black text-2xl p-4 border-none block mt-1 "
