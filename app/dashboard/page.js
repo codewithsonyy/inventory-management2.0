@@ -160,9 +160,9 @@ export default function Dashboard() {
   }, [products]);
 
   return (
-    <div className="p-6">
+    <div className="md:p-6 w-full">
       <Header />
-      <div className="container mx-auto w-full md:w-1/2  my-8 ">
+      <div className="container mx-auto w-full md:w-1/2  my-8  px-3 md:px-0">
         <h1 className=" md:text-3xl font-semibold mb-6">Search a Product</h1>
         <div className="flex mb-2">
           <input
@@ -184,16 +184,16 @@ export default function Dashboard() {
             <p>loading...</p>
           </div>
         )}
-        <div className="dropcontainer absolute  w-1/2 border-1 bg-green-100 rounded-md ">
+        <div className="dropcontainer absolute w-11/12 md:w-1/2 border-1 bg-green-100 rounded-md ">
           {search &&
             (dropdown.length > 0 ? (
               dropdown.map((item) => {
                 return (
                   <div
                     key={item.slug}
-                    className="container flex justify-between p-2 my-1 border-b-2"
+                    className="container flex flex-col sm:flex-row justify-between p-2 my-1 border-b-2"
                   >
-                    <span className="slug">
+                    <span className="slug text-sm md:text-base">
                       {" "}
                       {item.slug} ({item.quantity} available for ₹
                       {item.price * item.quantity})
@@ -234,104 +234,97 @@ export default function Dashboard() {
       </div>
 
       {/* Display Current Stock  */}
-
-      
-         
-          <div className="flex gap-4 flex-col md:flex-row">
-            <div className="container mx-auto shadow-md rounded-md p-3 my-8">
+          <div className="flex gap-4 flex-col md:flex-row   w-full">
+            <div className="container mx-auto shadow-md rounded-md p-3 my-8 w-11/12 ">
               <h1 className="text-3xl font-semibold mb-6">Add a Product</h1>
+              <form>
+                <div className="mb-4">
+                  <label htmlFor="productName" className="block mb-2">
+                    Product Slug
+                  </label>
+                  <input
+                    value={productForm?.slug || ""}
+                    name="slug"
+                    onChange={handleChange}
+                    type="text"
+                    id="productName"
+                    className="w-full border border-gray-300 px-4 py-2"
+                  />
+                </div>
 
+                <div className="mb-4">
+                  <label htmlFor="quantity" className="block mb-2">
+                    Quantity
+                  </label>
+                  <input
+                    value={productForm?.quantity || ""}
+                    name="quantity"
+                    onChange={handleChange}
+                    type="number"
+                    id="quantity"
+                    className="w-full border border-gray-300 px-4 py-2"
+                  />
+                </div>
 
-          <form>
-            <div className="mb-4">
-              <label htmlFor="productName" className="block mb-2">
-                Product Slug
-              </label>
-              <input
-                value={productForm?.slug || ""}
-                name="slug"
-                onChange={handleChange}
-                type="text"
-                id="productName"
-                className="w-full border border-gray-300 px-4 py-2"
-              />
+                <div className="mb-4">
+                  <label htmlFor="price" className="block mb-2">
+                    Price
+                  </label>
+                  <input
+                    value={productForm?.price || ""}
+                    name="price"
+                    onChange={handleChange}
+                    type="number"
+                    id="price"
+                    className="w-full border border-gray-300 px-4 py-2"
+                  />
+                </div>
+
+                <button
+                  onClick={addProduct}
+                  type="submit"
+                  className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg shadow-md font-semibold"
+                >
+                  Add Product
+                </button>
+              </form>
             </div>
-
-            <div className="mb-4">
-              <label htmlFor="quantity" className="block mb-2">
-                Quantity
-              </label>
-              <input
-                value={productForm?.quantity || ""}
-                name="quantity"
-                onChange={handleChange}
-                type="number"
-                id="quantity"
-                className="w-full border border-gray-300 px-4 py-2"
-              />
-            </div>
-
-            <div className="mb-4">
-              <label htmlFor="price" className="block mb-2">
-                Price
-              </label>
-              <input
-                value={productForm?.price || ""}
-                name="price"
-                onChange={handleChange}
-                type="number"
-                id="price"
-                className="w-full border border-gray-300 px-4 py-2"
-              />
-            </div>
-
-            <button
-              onClick={addProduct}
-              type="submit"
-              className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg shadow-md font-semibold"
-            >
-              Add Product
-            </button>
-          </form>
-            </div>
-            <div className="container my-8 shadow-md rounded-md p-3 mx-auto">
+            <div className="container my-8 shadow-md rounded-md">
               <h1 className="text-3xl font-semibold mb-6">Display Current Stock</h1>
-
-
-          <table className="table-auto w-full">
-            <thead>
-              <tr>
-                <th className="px-4 py-2">Product Name</th>
-                <th className="px-4 py-2">Quantity</th>
-                <th className="px-4 py-2">Unit Price</th>
-                <th className="px-4 py-2">Total Price</th>
-                <th className="px-4 py-2">Delete</th>
-              </tr>
-            </thead>
-            <tbody>
-              {products &&
-                products.map((product) => {
-                  return (
-                    <tr key={product.slug}>
-                      <td className="border px-4 py-2">{product.slug}</td>
-                      <td className="border px-4 py-2">{product.quantity}</td>
-                      <td className="border px-4 py-2">₹{product.price}</td>
-                      <td className="border px-4 py-2">
-                        ₹{product.price * product.quantity}
-                      </td>
-                      <td
-                        onClick={() => handleDeleteProduct(product._id)}
-                        className="border cursor-pointer flex justify-center items-center text-2xl py-2 text-red-600"
-                      >
-                        <MdDelete />
-                      </td>
-                    </tr>
-                  );
-                })}
-            </tbody>
-          </table>
-        </div>
-      </div>
+              <table className="table-auto w-full font-semibold text-sm md:font:bold md:text-base">
+                <thead>
+                  <tr>
+                    <th className="md:px-4 py-2">Product Name</th>
+                    <th className="md:px-4 py-2">Quantity</th>
+                    <th className="md:px-4 py-2">Unit Price</th>
+                    <th className="md:px-4 py-2">Total Price</th>
+                    <th className="md:px-4 py-2">Delete</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {products &&
+                    products.map((product) => {
+                      return (
+                        <tr key={product.slug} className="">
+                          <td className="border px-4 py-2">{product.slug}</td>
+                          <td className="border px-4 py-2">{product.quantity}</td>
+                          <td className="border px-4 py-2">₹{product.price}</td>
+                          <td className="border px-4 py-2">
+                            ₹{product.price * product.quantity}
+                          </td>
+                          <td
+                            onClick={() => handleDeleteProduct(product._id)}
+                            className="border cursor-pointer flex justify-center items-center text-2xl py-2 text-red-600"
+                          >
+                            <MdDelete />
+                          </td>
+                        </tr>
+                      );
+                    })}
+                </tbody>
+              </table>
+            </div>
+          </div>
 
     </div>
   );
