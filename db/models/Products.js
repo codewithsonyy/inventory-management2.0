@@ -1,4 +1,4 @@
-import mongoose, { models } from "mongoose";
+import mongoose from "mongoose";
 import { Schema, model } from "mongoose";
 import mongooseUniqueValidator from "mongoose-unique-validator";
 
