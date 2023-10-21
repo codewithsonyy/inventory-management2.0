@@ -9,6 +9,15 @@ Alert;
 const Login = () => {
   const [credentials, setCredentials] = useState({ email: "", password: "" });
   const [alert, setAlert] = useState(null);
+  const [inputType, setInputType] = useState("password")
+
+  const changeInputType = ()=>{
+    if (inputType=="password"){
+      setInputType("text")
+    }else if (inputType=="text"){
+      setInputType("password")
+    }
+  }
 
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -88,7 +97,7 @@ const Login = () => {
               <div className="relative mb-6">
                 <label className="">Password</label>
                 <input
-                  type="password"
+                  type={inputType}
                   className="peer block min-h-[auto] w-full rounded  bg-white px-3 py-[0.32rem] leading-[2.15] outline-none"
                   value={credentials?.password || ""}
                   name="password"
@@ -96,6 +105,11 @@ const Login = () => {
                   placeholder="Password"
                   onChange={onChange}
                 />
+              </div>
+
+              <div className="flex mb-4">
+                <input type="checkbox" id="checkbox" onChange={changeInputType}/>
+                <p className="ml-4">Show Password</p>
               </div>
 
               <div className="text-center lg:text-left">
