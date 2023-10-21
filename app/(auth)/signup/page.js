@@ -7,6 +7,15 @@ import Alert from "@/components/Alert";
 
 const Signup = () => {
   const [alert, setAlert] = useState(null);
+  const [inputType, setInputType] = useState("password")
+
+  const changeInputType = ()=>{
+    if (inputType=="password"){
+      setInputType("text")
+    }else if (inputType=="text"){
+      setInputType("password")
+    }
+  }
   const [credentials, setCredentials] = useState({
     name: "",
     email: "",
@@ -101,13 +110,18 @@ const Signup = () => {
               </label>
               <input
                 className=" shadow-inner bg-white rounded-lg placeholder-black text-2xl p-4 border-none block mt-1 w-full"
-                type="password"
+                type={inputType}
                 name="password"
                 required="required"
                 value={credentials?.password || ""}
                 onChange={onChange}
                 minLength={5}
               />
+            </div>
+
+            <div className="flex mb-4 mt-4">
+                <input type="checkbox" id="checkbox" onChange={changeInputType}/>
+                <p className="ml-4">Show Password</p>
             </div>
 
             <div className="flex items-center justify-between mt-8">
