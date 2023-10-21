@@ -53,7 +53,6 @@ const Signup = () => {
         return;
       }
     } catch (error) {
-      console.log(error);
       showAlert(
         error instanceof Object && error.message
           ? error.message

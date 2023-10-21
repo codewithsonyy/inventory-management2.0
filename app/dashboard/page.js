@@ -3,6 +3,7 @@ import Header from "@/components/Header";
 import { useState, useEffect } from "react";
 import { MdDelete } from "react-icons/md";
 import { useRouter } from "next/navigation";
+import { toast } from "react-toastify";
 export default function Dashboard() {
   const [productForm, setProductForm] = useState({});
   const [products, setProducts] = useState([]);
@@ -63,18 +64,25 @@ export default function Dashboard() {
         },
         body: JSON.stringify(productForm),
       });
-      console.log(response);
 
-      if (response.ok) {
+      const result = await response.json();
+
+      if (result.success) {
         // Product added successfully
-        alert("Your Product has been added!");
+        toast.success("Your Product has been added!");
         setProductForm({});
       } else {
         // Handle error case
-        console.error("Error adding product");
+        toast.error(result.message ?? "Something went wrong");
       }
     } catch (error) {
-      console.error("Error:", error);
+      toast.error(
+        error instanceof Object && error.message
+          ? error.message
+          : error
+          ? error
+          : "Something went wrong!"
+      );
     }
     // Fetch all the products again to sync back
     const response = await fetch("/api/product", {
@@ -128,30 +136,52 @@ export default function Dashboard() {
         body: JSON.stringify(ID),
       });
       let rjson = await response.json();
-      console.log(rjson);
+
       if (rjson.success === true) {
-        alert("Succesfully Deleted");
+        toast.success("Succesfully Deleted");
         setLoadingDelAction(!loadingDelAction);
         router.refresh;
+      } else {
+        toast.error(rjson.message ?? "Something went wrong");
       }
     } catch (error) {
-      console.log(error);
+      toast.error(
+        error instanceof Object && error.message
+          ? error.message
+          : error
+          ? error
+          : "Something went wrong!"
+      );
     }
   };
 
   useEffect(() => {
     // Fetch products on load
     const fetchProducts = async () => {
-      const response = await fetch("/api/product", {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          "auth-token": localStorage.getItem("token"),
-        },
-      });
-      let rjson = await response.json();
+      try {
+        const response = await fetch("/api/product", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            "auth-token": localStorage.getItem("token"),
+          },
+        });
+        let rjson = await response.json();
 
-      setProducts(rjson.products);
+        if (rjson.success) {
+          setProducts(rjson.products);
+        } else {
+          toast.error(rjson.message);
+        }
+      } catch (error) {
+        toast.error(
+          error instanceof Object && error.message
+            ? error.message
+            : error
+            ? error
+            : "Something went wrong!"
+        );
+      }
     };
     fetchProducts();
   }, [loadingDelAction]);
