@@ -4,15 +4,16 @@ import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Alert from "@/components/Alert";
+import ButtonPrimary from "../../../components/ButtonPrimary";
 
 const Signup = () => {
   const [alert, setAlert] = useState(null);
   const [inputType, setInputType] = useState("password")
 
-  const changeInputType = ()=>{
-    if (inputType=="password"){
+  const changeInputType = () => {
+    if (inputType == "password") {
       setInputType("text")
-    }else if (inputType=="text"){
+    } else if (inputType == "text") {
       setInputType("password")
     }
   }
@@ -66,93 +67,93 @@ const Signup = () => {
         error instanceof Object && error.message
           ? error.message
           : error
-          ? error
-          : "Something went wrong!",
+            ? error
+            : "Something went wrong!",
         "danger"
       );
     }
   };
 
   return (
-    <div>
-      <div className="p-10 h-fit">
-        <Alert alert={alert} showAlert={showAlert} />
+    <section className="h-screen">
+      <Alert alert={alert} showAlert={showAlert} />
 
-        <div className="grid grid-cols-1 md:grid-cols-2 rounded-md xl:w-2/3 lg:p-10 gap-8">
-          <form onSubmit={submitHandler}>
-            <div>
-              <label className="block font-semibold" htmlFor="name">
-                Name
-              </label>
-              <input
-                className="w-full shadow-inner bg-white rounded-lg placeholder-black text-2xl p-4 border-none block mt-1 "
-                type="text"
-                name="name"
-                required="required"
-                id="name"
-                placeholder="Enter name"
-                value={credentials?.name || ""}
-                onChange={onChange}
-              />
-            </div>
+      <div className="h-full mt-8 p-8  rounded-md">
+        <div className="g-6 flex h-full flex-wrap mx-auto items-center w-2/3  justify-center lg:justify-between">
+          <div className="shrink-1 mb-8 grow-0 basis-auto md:mb-0 md:w-9/12 md:shrink-0 lg:w-6/12 xl:w-6/12">
+            <img src="/signup-bg.jpg" className="w-full border rounded-3xl" alt="Sample image" />
+          </div>
 
-            <div className="mt-4">
-              <label className="block font-semibold" htmlFor="email ">
-                Email
-              </label>
-              <input
-                className=" shadow-inner bg-white rounded-lg placeholder-black text-2xl p-4 border-none block mt-1 w-full"
-                type="email"
-                name="email"
-                id="email"
-                value={credentials?.email || ""}
-                onChange={onChange}
-                placeholder="Enter email"
-              />
-            </div>
+          <div className="mb-12 md:mb-0 md:w-8/12 lg:w-5/12 xl:w-5/12">
+            <form onSubmit={submitHandler}>
+              <div className="relative mb-6">
+                <label className="" htmlFor="name">Name</label>
+                <input
+                  className="peer block min-h-[auto] w-full rounded  bg-white px-3 py-[0.32rem] leading-[2.15] outline-none"
+                  type="text"
+                  id="name"
+                  required="true"
+                  name="name"
+                  value={credentials?.name || ""}
+                  onChange={onChange}
+                  placeholder="Enter your name"
+                />
+              </div>
 
-            <div className="mt-4">
-              <label className="block font-semibold" htmlFor="password">
-                Password
-              </label>
-              <input
-                className=" shadow-inner bg-white rounded-lg placeholder-black text-2xl p-4 border-none block mt-1 w-full"
-                type={inputType}
-                name="password"
-                required="required"
-                value={credentials?.password || ""}
-                onChange={onChange}
-                minLength={5}
-              />
-            </div>
 
-            <div className="flex mb-4 mt-4">
-                <input type="checkbox" id="checkbox" onChange={changeInputType}/>
+              <div className="relative mb-6">
+                <label className="" htmlFor="email">Email</label>
+                <input
+                  className="peer block min-h-[auto] w-full rounded  bg-white px-3 py-[0.32rem] leading-[2.15] outline-none"
+                  type="email"
+                  id="email"
+                  name="email"
+                  value={credentials?.email || ""}
+                  onChange={onChange}
+                  placeholder="Enter your email"
+                />
+              </div>
+
+              <div className="relative mb-6">
+                <label className="" htmlFor="password">Password</label>
+                <input
+                  type={inputType}
+                  className="peer block min-h-[auto] w-full rounded  bg-white px-3 py-[0.32rem] leading-[2.15] outline-none"
+                  value={credentials?.password || ""}
+                  name="password"
+                  id="password"
+                  placeholder="Create a Password"
+                  onChange={onChange}
+                  minLength={5}
+                />
+              </div>
+
+              <div className="flex mb-4">
+                <input type="checkbox" id="checkbox" onChange={changeInputType} />
                 <p className="ml-4">Show Password</p>
-            </div>
+              </div>
 
-            <div className="flex items-center justify-between mt-8">
-              <button
-                type="submit"
-                className="flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-slate-800 hover:rounded-none active:animate-ping md:py-4 md:text-lg md:px-10"
-              >
-                Submit
-              </button>
-              <h1 className="ml-4">
-                If user already exits&#x2192;
-                <Link
-                  className="text-green-400 font-bold active:text-gray-200"
-                  href="/login"
+              <div className="text-center lg:text-left">
+                <button
+                  className="inline-block rounded shadow-md bg-slate-900 hover:bg-[#2ff9c6] active:animate-ping hover:text-black px-7 pb-2.5 pt-3 text-sm font-medium uppercase leading-normal text-white  focus:outline-none"
+                  type="submit"
                 >
-                  {" "}
-                  Please Login
-                </Link>
-              </h1>
-            </div>
-          </form>
+                  Sign Up
+                </button>
+
+                <p className="mb-0 mt-2 pt-1 text-sm font-semibold">
+                  Already have an account ?
+                  <Link href="/login">
+                    <span className=" text-green-500 hover:text-green-600 active:text-white "> Please login
+                    </span>
+                  </Link>
+                </p>
+              </div>
+            </form>
+          </div>
         </div>
       </div>
-    </div>
+    </section>
   );
 };
 
